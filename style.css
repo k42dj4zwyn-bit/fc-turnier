@@ -94,6 +94,19 @@ h2 {
   margin-bottom: 0.8rem;
 }
 
+/* Turnier-Detail Header */
+
+.tournament-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.tournament-detail-header h3 {
+  margin-bottom: 0.2rem;
+}
+
 /* Zweispaltiges Layout für Teams */
 
 .layout-two-cols {
@@ -339,4 +352,15 @@ ul {
 
 .ko-button:hover {
   background: #4b5eff;
+}
+
+/* Danger-Button (Turnier löschen) */
+
+.danger-button {
+  background: #b3261e;
+  border-color: #e0524b;
+}
+
+.danger-button:hover {
+  background: #cf3b34;
 }

@@ -298,6 +298,7 @@ const matchList = document.getElementById("match-list");
 const standingsWrapper = document.getElementById("standings-wrapper");
 
 const generateKoBtn = document.getElementById("btn-generate-ko");
+const deleteTournamentBtn = document.getElementById("btn-delete-tournament");
 
 tournamentTypeSelect.addEventListener("change", () => {
   if (tournamentTypeSelect.value === "worldcup") {
@@ -670,6 +671,18 @@ tournamentForm.addEventListener("submit", async (e) => {
   selectedTournamentId = newTournament.id;
 });
 
+// Turnier löschen
+deleteTournamentBtn.addEventListener("click", async () => {
+  const tournament = getSelectedTournament();
+  if (!tournament) return;
+
+  if (!confirm(`Turnier "${tournament.name}" wirklich löschen?`)) return;
+
+  const ref = doc(tournamentsCol, tournament.id);
+  await deleteDoc(ref);
+});
+
+// Match manuell hinzufügen
 matchForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const tournament = getSelectedTournament();
