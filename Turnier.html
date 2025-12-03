@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>FIFA Turnier Tool</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>FIFA Turnier Tool</h1>
+    <nav>
+      <button id="nav-teams" class="nav-button active">Teams</button>
+      <button id="nav-tournaments" class="nav-button">Turniere</button>
+    </nav>
+  </header>
+
+  <main class="page-container">
+    <!-- Teams-Ansicht -->
+    <section id="view-teams" class="view">
+      <h2>Teams verwalten</h2>
+
+      <div class="layout-two-cols">
+        <form id="team-form" class="card">
+          <h3>Neues Team</h3>
+          <label>
+            Teamname:
+            <input type="text" id="team-name" required />
+          </label>
+          <label>
+            Kürzel (optional):
+            <input type="text" id="team-short" maxlength="4" />
+          </label>
+          <button type="submit">Team hinzufügen</button>
+        </form>
+
+        <section class="card">
+          <h3>Gespeicherte Teams</h3>
+          <ul id="team-list"></ul>
+        </section>
+      </div>
+    </section>
+
+    <!-- Turniere-Ansicht -->
+    <section id="view-tournaments" class="view hidden">
+      <h2>Turniere</h2>
+
+      <section class="tournament-layout">
+        <!-- Turnier erstellen -->
+        <div class="card tournament-create">
+          <h3>Neues Turnier anlegen</h3>
+          <form id="tournament-form">
+            <label>
+              Turniername:
+              <input type="text" id="tournament-name" required />
+            </label>
+
+            <label>
+              Modus:
+              <select id="tournament-type">
+                <option value="league">Liga (jeder gegen jeden)</option>
+                <option value="worldcup">WM (Gruppenphase)</option>
+              </select>
+            </label>
+
+            <fieldset>
+              <legend>Teilnehmende Teams</legend>
+              <div id="tournament-team-options">
+                <!-- wird per JS mit Checkboxes gefüllt -->
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Spielplan-Erstellung</legend>
+              <label>
+                <input type="radio" name="schedule-mode" value="auto" checked />
+                Automatisch Spielplan erstellen
+              </label>
+              <label>
+                <input type="radio" name="schedule-mode" value="manual" />
+                Kein Spielplan – ich lege alle Spiele selbst an
+              </label>
+            </fieldset>
+
+            <div id="worldcup-settings" class="hidden">
+              <h4>WM-Einstellungen</h4>
+              <label>
+                Anzahl Gruppen:
+                <input type="number" id="worldcup-group-count" min="1" value="2" />
+              </label>
+              <p class="hint">
+                Teams werden gleichmäßig auf Gruppen A, B, C, ... verteilt.
+              </p>
+            </div>
+
+            <button type="submit">Turnier erstellen</button>
+          </form>
+        </div>
+
+        <!-- Turnierliste & Details -->
+        <div class="tournament-list-detail">
+          <div class="card">
+            <h3>Bestehende Turniere</h3>
+            <ul id="tournament-list"></ul>
+          </div>
+
+          <section id="tournament-detail" class="card hidden">
+            <h3 id="tournament-detail-title"></h3>
+            <p id="tournament-detail-info"></p>
+
+            <h4>Aktuelle Tabelle(n)</h4>
+            <div id="standings-wrapper">
+              <!-- Tabellen werden per JS eingefügt -->
+            </div>
+
+            <button id="btn-generate-ko" class="ko-button hidden">
+              K.o.-Phase aus Gruppen erzeugen
+            </button>
+
+            <h4>Matches</h4>
+
+            <form id="match-form" class="match-form">
+              <div class="match-form-row">
+                <label>
+                  Runde:
+                  <input type="number" id="match-round" min="1" value="1" />
+                </label>
+                <label>
+                  Heimteam:
+                  <select id="match-home"></select>
+                </label>
+                <label>
+                  Auswärtsteam:
+                  <select id="match-away"></select>
+                </label>
+                <button type="submit">Match hinzufügen</button>
+              </div>
+            </form>
+
+            <ul id="match-list"></ul>
+          </section>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <!-- WICHTIG: type="module", damit die Firebase-Imports in app.js funktionieren -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
