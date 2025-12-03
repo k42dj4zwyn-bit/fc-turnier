@@ -300,6 +300,11 @@ const standingsWrapper = document.getElementById("standings-wrapper");
 const generateKoBtn = document.getElementById("btn-generate-ko");
 const deleteTournamentBtn = document.getElementById("btn-delete-tournament");
 
+// nur zur Sicherheit: prüfen, ob der Button überhaupt gefunden wird
+if (!deleteTournamentBtn) {
+  console.warn("btn-delete-tournament nicht gefunden – prüfe index.html-ID");
+}
+
 tournamentTypeSelect.addEventListener("change", () => {
   if (tournamentTypeSelect.value === "worldcup") {
     worldcupSettings.classList.remove("hidden");
@@ -671,16 +676,30 @@ tournamentForm.addEventListener("submit", async (e) => {
   selectedTournamentId = newTournament.id;
 });
 
-// Turnier löschen
-deleteTournamentBtn.addEventListener("click", async () => {
-  const tournament = getSelectedTournament();
-  if (!tournament) return;
+// Turnier löschen – mit sichtbarem Feedback
+if (deleteTournamentBtn) {
+  deleteTournamentBtn.addEventListener("click", async () => {
+    const tournament = getSelectedTournament();
+    if (!tournament) {
+      alert("Kein Turnier ausgewählt.");
+      return;
+    }
 
-  if (!confirm(`Turnier "${tournament.name}" wirklich löschen?`)) return;
+    const ok = confirm(`Turnier "${tournament.name}" wirklich löschen?`);
+    if (!ok) return;
 
-  const ref = doc(tournamentsCol, tournament.id);
-  await deleteDoc(ref);
-});
+    try {
+      const ref = doc(tournamentsCol, tournament.id);
+      await deleteDoc(ref);
+      alert(`Turnier "${tournament.name}" wurde gelöscht.`);
+      // selectedTournamentId zurücksetzen – Snapshot kümmert sich um UI
+      selectedTournamentId = null;
+    } catch (err) {
+      console.error("Fehler beim Löschen des Turniers:", err);
+      alert("Fehler beim Löschen des Turniers (siehe Konsole).");
+    }
+  });
+}
 
 // Match manuell hinzufügen
 matchForm.addEventListener("submit", async (e) => {
